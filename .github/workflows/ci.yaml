@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - showcase_3d_printer_anomaly_detection/**
+      - tests/**
+      - .python-version
+      - poetry.lock
+      - project.toml
+      - pyproject.toml
+  workflow_dispatch:
+
+jobs:
+  ci:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+        python:
+          - '3.8.6'
+        poetry:
+          - '1.1.7'
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Set up Poetry
+        uses: abatilo/actions-poetry@v2.1.2
+        with:
+          poetry-version: ${{ matrix.poetry }}
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Lint with flake8
+        run: poetry run flake8
+
+      - name: Scan with bandit
+        run: poetry run bandit --recursive . --configfile bandit.yaml
+
+      - name: Test with pytest
+        run: poetry run pytest
