@@ -4,13 +4,6 @@ on:
   pull_request:
     branches:
       - main
-    paths:
-      - showcase_3d_printer_anomaly_detection/**
-      - tests/**
-      - .python-version
-      - poetry.lock
-      - project.toml
-      - pyproject.toml
   workflow_dispatch:
 
 jobs:
