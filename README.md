@@ -62,7 +62,11 @@ Create project environment, install dependencies and activate the environment in
 your shell:
 
 ```shell
-# Create project environment and install dependencies
+# Configure Poetry to create environments in project directories (OPTIONAL)
+poetry config virtualenvs.in-project true
+# Create project environment
+poetry env use $(which python)
+# Install dependencies
 poetry install
 # Activate project environment
 poetry shell
